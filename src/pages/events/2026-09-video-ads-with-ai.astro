@@ -1,0 +1,1013 @@
+---
+// Standalone campaign landing page for the Sep 2026 AI video-ads workshop.
+// Ported verbatim from the aibn-videoads repo; Tailwind runs via the Play CDN.
+// Route: /events/2026-09-video-ads-with-ai  ·  assets in public/events/2026-09-video-ads-with-ai/assets/
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learn to create video ads with AI · Chennai workshop, 19 Sep 2026</title>
+<meta name="description" content="A hands-on workshop: write, generate and edit a real video ad with AI on your laptop. No camera, no crew. Chennai · Sat 19 Sep 2026, 2-6pm · ₹999.">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Learn to create video ads with AI, a hands-on workshop">
+<meta property="og:description" content="No camera, no crew, no studio. Spend an afternoon making your first video ad with AI. Chennai · 19 Sep 2026 · ₹999.">
+<meta property="og:url" content="https://aibuildersnetwork.in/events/2026-09-video-ads-with-ai/">
+<meta property="og:image" content="[SHARE_IMAGE_URL]"><!-- PLACEHOLDER: 1200×630 share image -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Learn to create video ads with AI, a hands-on workshop">
+<meta name="twitter:description" content="No camera, no crew, no studio. Spend an afternoon making your first video ad with AI. Chennai · 19 Sep 2026 · ₹999.">
+<meta name="twitter:image" content="[SHARE_IMAGE_URL]"><!-- PLACEHOLDER: 1200×630 share image -->
+
+<script is:inline src="https://cdn.tailwindcss.com"></script>
+<script is:inline>
+  tailwind.config = {
+    theme: { extend: {
+      colors: { paper:'#EEF2F7', sky:'#7FA8F5', mint:'#9FE7CE', lilac:'#C9B8F2',
+                grape:'#5B3BE8', ink:'#1B2340', paperwhite:'#FDFDFF' },
+      fontFamily: {
+        display: ['"Mona Sans"','Inter','system-ui','sans-serif'],
+        title: ['Pally','Inter','system-ui','sans-serif'],
+        body: ['"Nunito Sans"','Segoe UI','sans-serif'] },
+      borderWidth: { 3: '3px' },
+      borderRadius: { card: '34px' },
+      boxShadow: {
+        soft: '0 20px 44px -16px rgba(27,35,64,0.30)',
+        softsm: '0 10px 24px -10px rgba(27,35,64,0.26)' },
+    }}
+  }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:ital,wght@0,400..800;1,400..800&family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,600;0,6..12,700;1,6..12,400&display=swap">
+
+<style is:inline>
+  :root { color-scheme: light; }
+  [hidden] { display: none !important; }
+  body { background:#EEF2F7; }
+
+  /* Pally (Fontshare) — h1 only. Inlined with absolute https URLs; Fontshare's <link> ships
+     protocol-relative src that breaks on file:// (and Fontshare isn't on the Artifact CSP). */
+  @font-face { font-family:'Pally'; font-weight:400; font-style:normal; font-display:swap;
+    src:url('https://cdn.fontshare.com/wf/H7RRPPQUKUZD2RCEKOG2EUWW2PMPGIYT/CUKSXG3REB7ZF4OU6YXUM2U3W5NYEU3I/CEHOWZ3P4TA7OGFSEAUC7EPX7SYRE24V.woff2') format('woff2'); }
+  @font-face { font-family:'Pally'; font-weight:700; font-style:normal; font-display:swap;
+    src:url('https://cdn.fontshare.com/wf/V5WYWD27XO3LMOQ4EG2MQK4FRPTA5QJ2/ISQNWVNKUKTQCSPRHYNOUSUBYEKTLRCT/T66H3U7F4BLCEXDVQJD4H2MBK7CL3FOD.woff2') format('woff2'); }
+  .reveal { opacity:0; transform:translateY(16px); transition:opacity .5s ease, transform .5s ease; }
+  .reveal.in { opacity:1; transform:none; }
+
+  /* large section card — bubble look without the costly backdrop-blur */
+  .bubble-card {
+    box-shadow:
+      inset 0 2px 1px rgba(255,255,255,0.85),
+      inset 0 -16px 30px rgba(120,140,210,0.12),
+      0 18px 38px -20px rgba(27,35,64,0.30);
+  }
+
+  /* ---- proof carousel ---- */
+  .reel { position:relative; }
+  .reel-track {
+    display:flex; gap:1rem; overflow-x:auto; overscroll-behavior-x:contain;
+    scroll-snap-type:x proximity; scroll-behavior:smooth;
+    padding:4px 2px 6px; -webkit-overflow-scrolling:touch;
+    scrollbar-width:none; list-style:none; margin:0;
+  }
+  .reel-track::-webkit-scrollbar { display:none; }
+  .reel-item { flex:0 0 auto; width:clamp(190px,60vw,236px); scroll-snap-align:center; }
+  @media (min-width:640px){ .reel-item { width:228px; scroll-snap-align:start; } }
+  .reel-card {
+    position:relative; display:block; width:100%; aspect-ratio:9/16;
+    overflow:hidden; border-radius:20px; background:#d9def0;
+    box-shadow:inset 0 2px 1px rgba(255,255,255,0.7), 0 16px 32px -18px rgba(27,35,64,0.45);
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .reel-card img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .reel-item:nth-child(odd)  .reel-card { rotate:-1.4deg; }
+  .reel-item:nth-child(even) .reel-card { rotate: 1.4deg; }
+  .lb-open:hover .reel-card,
+  .lb-open:focus-visible .reel-card { rotate:0deg; transform:translateY(-4px);
+    box-shadow:inset 0 2px 1px rgba(255,255,255,0.7), 0 22px 40px -18px rgba(27,35,64,0.5); }
+  .reel-play {
+    position:absolute; left:50%; top:50%; translate:-50% -50%;
+    display:grid; place-items:center; width:52px; height:52px; border-radius:999px;
+    padding-left:3px; background:rgba(253,253,255,0.92); color:#5B3BE8;
+    box-shadow:0 6px 16px -4px rgba(27,35,64,0.4);
+  }
+  .reel-nav {
+    position:absolute; top:50%; translate:0 -50%; z-index:3;
+    display:none; width:44px; height:44px; border-radius:999px;
+    align-items:center; justify-content:center;
+    background:#FDFDFF; color:#1B2340;
+    box-shadow:inset 0 2px 1px rgba(255,255,255,0.9), 0 12px 26px -12px rgba(27,35,64,0.45);
+    transition:transform .15s ease, opacity .15s ease;
+  }
+  .reel-nav:hover { transform:translateY(-50%) scale(1.06); }
+  .reel-nav[disabled] { opacity:0; pointer-events:none; }
+  .reel-prev { left:-6px; }
+  .reel-next { right:-6px; }
+  @media (min-width:980px){ .reel-nav { display:flex; } .reel-prev{ left:-20px; } .reel-next{ right:-20px; } }
+  .reel-dots { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-top:1.25rem; }
+  .reel-dot { width:7px; height:7px; border-radius:999px; background:rgba(27,35,64,0.2);
+    transition:width .2s ease, background .2s ease; }
+  .reel-dot.on { width:22px; background:#5B3BE8; }
+
+  /* lightbox */
+  #lightbox { position:fixed; inset:0; z-index:60; display:grid; place-items:center; padding:20px;
+    background:rgba(20,24,44,0.55); -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px);
+    opacity:0; transition:opacity .2s ease; }
+  #lightbox.open { opacity:1; }
+  #lightbox .lb-panel { transform:scale(.96); transition:transform .2s ease; width:min(460px,100%); }
+  #lightbox.open .lb-panel { transform:scale(1); }
+  #lb-stage { aspect-ratio:9/16; height:min(74vh,620px); max-width:100%; margin-inline:auto; }
+  #lb-stage video { display:block; width:100%; height:100%; object-fit:contain; background:#000; }
+
+  /* sticky mobile buy bar */
+  #buybar { position:fixed; inset-inline:0; bottom:0; z-index:40; transform:translateY(115%);
+    visibility:hidden; transition:transform .3s cubic-bezier(.22,1,.36,1), visibility .3s; }
+  #buybar.show { transform:translateY(0); visibility:visible; }
+
+  @media (prefers-reduced-motion: reduce) {
+    #lightbox, #lightbox .lb-panel { transition:none; }
+    #buybar { transition:none; }
+    .reel-track { scroll-behavior:auto; }
+    .reel-card { rotate:0deg !important; transition:none; }
+    .reel-nav { transition:none; }
+  }
+
+  /* soft "soap-bubble" surfaces — translucent, light caught on top, no strokes */
+  .bubble {
+    -webkit-backdrop-filter: blur(9px); backdrop-filter: blur(9px);
+    box-shadow:
+      inset 0 2px 1px rgba(255,255,255,0.9),
+      inset 0 -10px 18px rgba(120,140,210,0.16),
+      0 12px 26px -14px rgba(27,35,64,0.32);
+  }
+  /* die-cut "paper sticker" — the icon shape gets a chunky pale-tint underlay + a lift shadow that
+     hugs that silhouette. Full-colour icon rides on top. No box, no border. */
+  .sticker { filter: drop-shadow(2px 4px 0 rgba(27,35,64,0.16)); }
+  .sticker svg    { overflow: visible; }
+  .sticker .halo  { stroke: var(--tint); stroke-width: 10; }
+  .sticker .glyph { stroke: currentColor; stroke-width: 1.75; }
+
+  /* small round chips (e.g. hero detail icons) — reads clearly lifted at ~48px */
+  .bubble-pop {
+    box-shadow:
+      inset 0 2px 1px rgba(255,255,255,0.95),
+      inset 0 -5px 9px rgba(120,140,210,0.14),
+      0 1px 2px rgba(27,35,64,0.12),
+      0 6px 12px -3px rgba(27,35,64,0.20),
+      0 14px 22px -8px rgba(27,35,64,0.18);
+  }
+  .bubble-grape {
+    background-image: linear-gradient(148deg, #8064f2 0%, #5B3BE8 58%, #4a2fce 100%);
+    box-shadow:
+      inset 0 3px 3px rgba(255,255,255,0.5),
+      inset 0 -12px 20px rgba(24,12,86,0.4),
+      0 16px 34px -14px rgba(91,59,232,0.55);
+  }
+  .bubble-grape:hover { box-shadow:
+      inset 0 3px 3px rgba(255,255,255,0.55),
+      inset 0 -12px 20px rgba(24,12,86,0.4),
+      0 22px 40px -14px rgba(91,59,232,0.6); }
+  .mark-grape {
+    background-image: linear-gradient(150deg, #8064f2, #5B3BE8 65%, #4a2fce);
+    box-shadow: inset 0 2px 2px rgba(255,255,255,0.45), 0 8px 18px -9px rgba(91,59,232,0.5);
+  }
+
+  :where(a,button,summary,[tabindex]):focus-visible { outline:3px solid #5B3BE8; outline-offset:3px; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity:1; transform:none; transition:none; }
+    * { scroll-behavior:auto !important; }
+  }
+
+  /* ============================================================
+     SECTION 7 · FINAL CTA — 3D grand-finale stage
+     ============================================================ */
+  #join {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: clamp(5rem, 10vw, 8rem);
+    padding-bottom: 0;
+    perspective: 1500px;
+    perspective-origin: 50% 34%;
+    background: #EEF2F7;
+    /* soften the top edge so the glow fades in instead of hard-clipping */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 clamp(48px, 9vw, 104px));
+    mask-image: linear-gradient(to bottom, transparent 0, #000 clamp(48px, 9vw, 104px));
+  }
+  /* animated underwater scene sits BEHIND the slab — the CTA card only clips the top
+     ~10% of the clip; the rest of the animation (drifting fish, bubbles) stays visible */
+  .join-seabed {
+    position: relative;
+    z-index: 0;
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 1400px;
+    margin: -3rem auto 0;
+    pointer-events: none;
+    -webkit-user-select: none; user-select: none;
+    /* the clip's ground is a flat light grey — feather all four edges so the
+       rectangle melts into the section (top feather is tiny, mostly hidden by the slab) */
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%),
+                        linear-gradient(to bottom, transparent 0, #000 5%, #000 90%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%),
+                linear-gradient(to bottom, transparent 0, #000 5%, #000 90%, transparent 100%);
+    mask-composite: intersect;
+  }
+  @media (max-width: 640px) {
+    .join-seabed {
+      margin-top: -0.5rem;
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 5%, #000 95%, transparent 100%),
+                          linear-gradient(to bottom, transparent 0, #000 6%, #000 92%, transparent 100%);
+      -webkit-mask-composite: source-in;
+      mask-image: linear-gradient(to right, transparent 0, #000 5%, #000 95%, transparent 100%),
+                  linear-gradient(to bottom, transparent 0, #000 6%, #000 92%, transparent 100%);
+      mask-composite: intersect;
+    }
+  }
+
+  .join-stage {
+    position: relative; z-index: 1;
+    max-width: 1000px; margin: 0 auto; padding-inline: 1rem;
+    transform-style: preserve-3d;
+    transform: rotateX(var(--jrx, 0deg)) rotateY(var(--jry, 0deg));
+    transition: transform .45s cubic-bezier(.22,1,.36,1);
+  }
+
+  /* rotating aurora glow, set well behind the slab */
+  .join-aura {
+    position: absolute; left: 50%; top: 54%;
+    width: 68%; aspect-ratio: 1; border-radius: 50%;
+    translate: -50% -50%;
+    transform: translateZ(-220px);
+    background: conic-gradient(from 0deg,
+      #b6a2fb, #c9f0e2, #a9c6f7, #d7bcff, #b6a2fb);
+    filter: blur(74px) saturate(1.15);
+    opacity: .5;
+    animation: jspin 30s linear infinite;
+  }
+  @keyframes jspin { to { transform: translateZ(-220px) rotate(1turn); } }
+
+  /* the slab */
+  .join-card {
+    position: relative;
+    transform-style: preserve-3d;
+    border-radius: 36px;
+    padding: clamp(2.5rem, 6vw, 4.75rem) clamp(1.5rem, 5vw, 4rem);
+    text-align: center;
+    color: #FDFDFF;
+    background:
+      radial-gradient(120% 140% at 50% -12%, rgba(255,255,255,.30), transparent 55%),
+      linear-gradient(158deg, #8567f6 0%, #5B3BE8 52%, #4225bf 100%);
+    box-shadow:
+      inset 0 3px 2px rgba(255,255,255,.5),
+      inset 0 -26px 48px rgba(24,12,86,.42),
+      0 13px 0 #4126a8,
+      0 24px 0 #35208c,
+      0 40px 64px -20px rgba(27,20,80,.5),
+      0 0 96px -10px rgba(139,110,252,.5);
+    opacity: 0;
+    transform: translateY(76px) scale(.92);
+    transition: opacity .9s ease, transform 1s cubic-bezier(.2,.85,.2,1);
+  }
+  .join-card > * { position: relative; }
+
+  .join-title {
+    margin: 0;
+    font-family: 'Pally','Inter',system-ui,sans-serif;
+    font-weight: 700;
+    font-size: clamp(2.4rem, 7.2vw, 4.6rem);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    transform: translateZ(55px);
+    text-shadow:
+      0 1px 0 #c8b8ff, 0 2px 0 #b6a2fb, 0 3px 0 #a48ef6,
+      0 4px 0 #916fee, 0 6px 0 #7857df, 0 9px 18px rgba(10,4,44,.5);
+  }
+  .join-meta {
+    margin: 1.35rem 0 0;
+    font-family: "Mona Sans", Inter, system-ui, sans-serif;
+    color: rgba(255,255,255,.85);
+    font-size: clamp(.9rem, 2.2vw, 1.05rem);
+    letter-spacing: .01em;
+    transform: translateZ(38px);
+  }
+  .join-meta b { color: #fff; font-weight: 600; }
+
+  .join-cta {
+    --edge: #b9a7ff;
+    position: relative; overflow: hidden;
+    display: inline-flex; align-items: baseline; gap: .5rem;
+    margin-top: 2.4rem;
+    padding: 1.15rem 3rem;
+    border-radius: 999px;
+    font-family: "Mona Sans", Inter, system-ui, sans-serif;
+    font-weight: 700; font-size: 1.2rem;
+    color: #5B3BE8; background: #FDFDFF;
+    transform: translateZ(70px);
+    box-shadow: 0 9px 0 var(--edge), 0 20px 34px -8px rgba(8,4,40,.55);
+    transition: transform .16s ease, box-shadow .16s ease;
+  }
+  .join-cta span { font-weight: 600; color: rgba(91,59,232,.72); }
+  .join-cta:hover  { transform: translateZ(70px) translateY(-4px); box-shadow: 0 13px 0 var(--edge), 0 28px 44px -8px rgba(8,4,40,.6); }
+  .join-cta:active { transform: translateZ(70px) translateY(4px);  box-shadow: 0 4px 0 var(--edge),  0 12px 22px -8px rgba(8,4,40,.5); }
+  .join-cta::after {
+    content: ""; position: absolute; top: 0; left: -60%; width: 42%; height: 100%;
+    background: linear-gradient(100deg, transparent, rgba(255,255,255,.85), transparent);
+    transform: skewX(-18deg);
+    animation: jshine 4.5s ease-in-out infinite;
+  }
+  @keyframes jshine { 0%, 58% { left: -60%; } 100% { left: 135%; } }
+
+  /* floating bubbles at varied depth */
+  .join-orb {
+    position: absolute; border-radius: 50%; pointer-events: none;
+    background: radial-gradient(circle at 32% 30%,
+      rgba(255,255,255,.92), rgba(201,184,242,.5) 45%, rgba(127,168,245,.22) 72%, transparent 80%);
+    box-shadow:
+      inset 0 2px 6px rgba(255,255,255,.7),
+      inset 0 -8px 14px rgba(91,59,232,.12),
+      0 20px 38px -14px rgba(27,35,64,.26);
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+  .join-orb.o1 { width: 132px; height: 132px; left: -4%;  top: 7%;    transform: translateZ(90px);   animation: jfloat 7s   ease-in-out infinite alternate; }
+  .join-orb.o2 { width: 84px;  height: 84px;  right: -3%; top: 1%;     transform: translateZ(150px);  animation: jfloat 5.5s ease-in-out infinite alternate; }
+  .join-orb.o3 { width: 208px; height: 208px; right: -9%; bottom: 0%;  transform: translateZ(-120px); animation: jfloat 9s   ease-in-out infinite alternate; }
+  .join-orb.o4 { width: 64px;  height: 64px;  left: 6%;   bottom: 5%;  transform: translateZ(120px);  animation: jfloat 6.2s ease-in-out infinite alternate; }
+  .join-orb.o5 { width: 46px;  height: 46px;  left: 41%;  top: -7%;    transform: translateZ(60px);   animation: jfloat 8s   ease-in-out infinite alternate; }
+  @keyframes jfloat { from { translate: 0 0; } to { translate: 0 -26px; } }
+
+  /* orchestrated entrance (fires with the shared .reveal → .in) */
+  #join.in .join-card { opacity: 1; transform: translateY(0) scale(1); }
+  #join.in .join-orb  { opacity: .9; }
+  #join.in .join-orb.o3 { opacity: .7; transition-delay: .1s; }
+  #join.in .join-orb.o2 { transition-delay: .18s; }
+  #join.in .join-orb.o4 { transition-delay: .26s; }
+  #join.in .join-orb.o5 { transition-delay: .32s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .join-aura, .join-cta::after, .join-orb { animation: none; }
+    .join-stage { transition: none; transform: none; }
+    .join-card  { opacity: 1; transform: none; transition: none; }
+    .join-orb   { opacity: .8; }
+  }
+</style>
+</head>
+
+<body class="bg-paper text-ink font-body antialiased">
+
+<main id="main" class="relative z-10">
+
+  <!-- ============ SECTION 1 · HERO ============ -->
+  <section id="hero" class="relative isolate flex min-h-screen min-h-[100svh] flex-col overflow-hidden">
+
+    <!-- light "cloudy sky" wash: soft white blooms over a pale cool gradient -->
+    <div class="absolute inset-0 -z-10" aria-hidden="true"
+         style="background:
+           radial-gradient(52% 38% at 17% 20%, rgba(255,255,255,0.92), rgba(255,255,255,0) 70%),
+           radial-gradient(46% 40% at 83% 26%, rgba(255,255,255,0.78), rgba(255,255,255,0) 72%),
+           radial-gradient(62% 48% at 64% 90%, rgba(255,255,255,0.62), rgba(255,255,255,0) 75%),
+           radial-gradient(120% 92% at 50% 50%, rgba(240,244,250,0.55), rgba(240,244,250,0) 62%),
+           linear-gradient(180deg, #eef4fd 0%, #dce9f8 52%, #d4e1f4 100%);"></div>
+
+    <div class="relative mx-auto flex w-full max-w-[1152px] flex-1 flex-col items-center justify-center px-4 py-16">
+     <div class="flex w-full max-w-[928px] flex-col items-center text-center">
+
+      <div class="mb-4 flex items-center gap-3 sm:mb-5">
+        <svg viewBox="0 0 512 512" class="h-12 w-12 shrink-0 rounded-[10px]" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="512" height="512" fill="#1C1C1E"/>
+          <rect x="255" width="2" height="512" fill="url(#aibn0)"/>
+          <rect y="255" width="512" height="2" fill="url(#aibn1)"/>
+          <path d="M352.04 439V359.64H361.16L362.6 371.64H363.24C365.373 367.907 368.733 364.653 373.32 361.88C378.013 359.107 383.453 357.72 389.64 357.72C399.347 357.72 406.6 360.6 411.4 366.36C416.2 372.013 418.6 380.067 418.6 390.52V439H407.4V391.8C407.4 384.44 405.747 378.68 402.44 374.52C399.133 370.36 394.067 368.28 387.24 368.28C380.627 368.28 374.973 370.573 370.28 375.16C365.587 379.64 363.24 386.147 363.24 394.68V439H352.04Z" fill="white"/>
+          <path d="M128.76 440.92C122.573 440.92 117.293 439.64 112.92 437.08C108.653 434.413 105.507 430.893 103.48 426.52H102.52L100.92 439H92.28V323.8H103.48V371.8C105.613 368.067 108.867 364.813 113.24 362.04C117.613 359.16 122.787 357.72 128.76 357.72C135.693 357.72 141.773 359.32 147 362.52C152.227 365.72 156.333 370.413 159.32 376.6C162.307 382.787 163.8 390.307 163.8 399.16C163.8 408.013 162.307 415.587 159.32 421.88C156.333 428.067 152.173 432.813 146.84 436.12C141.613 439.32 135.587 440.92 128.76 440.92ZM127.96 430.36C135.107 430.36 140.973 427.8 145.56 422.68C150.147 417.56 152.44 409.773 152.44 399.32C152.44 388.867 150.147 381.08 145.56 375.96C140.973 370.84 135.107 368.28 127.96 368.28C120.813 368.28 114.947 370.84 110.36 375.96C105.773 381.08 103.48 388.867 103.48 399.32C103.48 409.773 105.773 417.56 110.36 422.68C114.947 427.8 120.813 430.36 127.96 430.36Z" fill="white"/>
+          <path d="M384.36 88.28C381.693 88.28 379.347 87.32 377.32 85.4C375.4 83.3733 374.44 81.0267 374.44 78.36C374.44 75.5867 375.4 73.24 377.32 71.32C379.347 69.4 381.693 68.44 384.36 68.44C387.133 68.44 389.48 69.4 391.4 71.32C393.32 73.24 394.28 75.5867 394.28 78.36C394.28 81.0267 393.32 83.3733 391.4 85.4C389.48 87.32 387.133 88.28 384.36 88.28ZM353.8 183V173.4H379.4V116.44C379.4 114.307 378.333 113.24 376.2 113.24H357V103.64H379.4C386.867 103.64 390.6 107.373 390.6 114.84V173.4H416.2V183H353.8Z" fill="white"/>
+          <path d="M120.6 184.92C114.307 184.92 109.08 183.8 104.92 181.56C100.867 179.32 97.8267 176.333 95.8 172.6C93.88 168.867 92.92 164.813 92.92 160.44C92.92 152.12 95.96 145.933 102.04 141.88C108.227 137.72 116.013 135.64 125.4 135.64H148.12V134.2C148.12 126.733 146.307 121.133 142.68 117.4C139.16 113.56 134.093 111.64 127.48 111.64C121.933 111.64 117.347 112.867 113.72 115.32C110.2 117.667 107.96 121.4 107 126.52H95.16C95.6933 121.187 97.4533 116.707 100.44 113.08C103.533 109.347 107.427 106.52 112.12 104.6C116.813 102.68 121.933 101.72 127.48 101.72C138.573 101.72 146.627 104.76 151.64 110.84C156.76 116.813 159.32 124.6 159.32 134.2V183H149.72L148.6 170.2H147.64C145.293 174.147 142.04 177.613 137.88 180.6C133.72 183.48 127.96 184.92 120.6 184.92ZM122.36 174.68C127.693 174.68 132.28 173.347 136.12 170.68C139.96 168.013 142.893 164.547 144.92 160.28C147.053 156.013 148.12 151.533 148.12 146.84V145.24H126.2C118.307 145.24 112.707 146.627 109.4 149.4C106.2 152.173 104.6 155.747 104.6 160.12C104.6 164.6 106.093 168.173 109.08 170.84C112.067 173.4 116.493 174.68 122.36 174.68Z" fill="white"/>
+          <defs>
+            <linearGradient id="aibn0" x1="256" y1="0" x2="256" y2="512" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity="0"/><stop offset="0.4" stop-color="white" stop-opacity="0.4"/><stop offset="0.6" stop-color="white" stop-opacity="0.4"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient>
+            <linearGradient id="aibn1" x1="512" y1="256" x2="0" y2="256" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity="0"/><stop offset="0.4" stop-color="white" stop-opacity="0.4"/><stop offset="0.6" stop-color="white" stop-opacity="0.4"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient>
+          </defs>
+        </svg>
+        <span class="text-left">
+          <span class="block font-display text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-ink/40">Presented by</span>
+          <span class="block font-display text-sm font-semibold text-ink/75">AI Builders Network</span>
+        </span>
+      </div>
+
+      <h1 class="mx-auto font-title font-bold tracking-[-0.015em]
+                 text-[clamp(2.1rem,8.2vw,6rem)] leading-[1.02] [text-wrap:nowrap]
+                 [-webkit-text-stroke:0.8px_currentColor]">
+        <span class="block">Learn to create</span>
+        <span class="block">video ads <span class="mark-grape inline-block -rotate-2 text-paperwhite rounded-[16px] px-2.5 pb-0.5 [-webkit-text-stroke:0px]">with AI</span></span>
+      </h1>
+
+      <p class="mt-6 mx-auto max-w-[52ch] text-[clamp(1rem,2.3vw,1.2rem)] text-ink/80">
+        No camera, no crew, no studio. A hands-on workshop where you write, generate and edit a real ad film on your laptop, for your brand or a client.
+      </p>
+
+      <div class="mt-9 flex flex-col items-center gap-5 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-x-9 sm:gap-y-4">
+        <div class="flex items-center gap-3 text-left">
+          <span class="bubble bubble-pop grid h-12 w-12 shrink-0 place-items-center rounded-full bg-paperwhite/80 text-ink" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9.5V8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1.5a2.5 2.5 0 0 0 0 5V16a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1.5a2.5 2.5 0 0 0 0-5Z"/>
+              <path d="M15 6v12" stroke-dasharray="2 2.5"/>
+            </svg>
+          </span>
+          <div>
+            <p class="font-display font-semibold text-ink leading-tight">Hands-on workshop</p>
+            <p class="text-sm text-ink/60">
+              Tickets @ <s class="text-ink/40">₹1,499</s> <span class="font-semibold text-ink">₹999</span>
+              <svg class="ml-1 inline-block align-[-0.15em] text-grape" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3.5 12.5 12 4a2 2 0 0 1 1.4-.6H19A1.5 1.5 0 0 1 20.5 5v5.6a2 2 0 0 1-.6 1.4l-8.5 8.5a2 2 0 0 1-2.8 0l-4.6-4.6a2 2 0 0 1 0-2.8Z"/>
+                <circle cx="16" cy="8" r="1.5"/>
+              </svg>
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 text-left">
+          <span class="bubble bubble-pop grid h-12 w-12 shrink-0 place-items-center rounded-full bg-paperwhite/80 text-ink" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 2v3M16 2v3"/>
+              <rect x="3" y="4.5" width="18" height="17" rx="4"/>
+              <path d="M3 9.5h18"/>
+              <path d="M8 13.5h.01M12 13.5h.01M16 13.5h.01M8 17h.01M12 17h.01"/>
+            </svg>
+          </span>
+          <div>
+            <time datetime="2026-09-19T14:00" class="block font-display font-semibold text-ink leading-tight">September 19</time>
+            <span class="block text-sm text-ink/60">Saturday &middot; 2-6&nbsp;pm</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 text-left">
+          <span class="bubble bubble-pop grid h-12 w-12 shrink-0 place-items-center rounded-full bg-paperwhite/80 text-ink" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22c5-4 7-7.6 7-11a7 7 0 1 0-14 0c0 3.4 2 7 7 11Z"/>
+              <circle cx="12" cy="11" r="2.75"/>
+            </svg>
+          </span>
+          <div>
+            <p class="font-display font-semibold text-ink leading-tight">Grootan Technologies</p>
+            <p class="text-sm text-ink/60">Perungudi, Chennai</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-8 flex flex-col items-center gap-8">
+        <!-- PLACEHOLDER: [PAYMENT_URL] -->
+        <a href="[PAYMENT_URL]"
+           class="bubble-grape inline-flex items-baseline gap-2 font-display font-bold text-lg
+                  text-paperwhite rounded-full px-8 py-4
+                  transition-transform transition-shadow duration-150
+                  hover:-translate-y-[3px] active:-translate-y-px active:scale-[.98]">
+          Get your seat <span class="font-semibold opacity-90">₹999</span>
+        </a>
+        <p class="text-sm text-ink/55">
+          Early-bird price for a limited number of seats. Regular price ₹1,499.
+        </p>
+      </div>
+     </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 2 · PROOF REEL ============ -->
+  <section id="proof" aria-labelledby="proof-h" class="reveal py-16 sm:py-24">
+   <div class="mx-auto max-w-[1152px] px-4">
+      <h2 id="proof-h" class="font-display font-bold text-ink text-[clamp(1.7rem,4.5vw,2.6rem)] leading-tight text-balance">
+        A picture is worth thousand words.<br class="hidden sm:block"> A video is worth thousand pictures.
+      </h2>
+      <p class="mt-4 max-w-[58ch] text-ink/70">
+        Video is how brands and products get noticed now, and making it no longer needs a crew, a studio or a huge budget. With AI, a finished ad is a laptop and an afternoon. Here's the proof: swipe through, tap any one to watch.
+      </p>
+
+      <div class="reel mt-9" role="group" aria-roledescription="carousel" aria-label="AI-made ad films">
+        <button type="button" class="reel-nav reel-prev" aria-label="Previous videos">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <ul class="reel-track" id="reel-track">
+          <li class="reel-item">
+            <button type="button" class="lb-open block w-full" data-src="/events/2026-09-video-ads-with-ai/assets/video-CKfKFZuh.mp4" data-poster="/events/2026-09-video-ads-with-ai/assets/poster-CKfKFZuh.jpg" aria-haspopup="dialog" aria-label="Watch AI-made ad film 1 of 8">
+              <span class="reel-card">
+                <img src="/events/2026-09-video-ads-with-ai/assets/poster-CKfKFZuh.jpg" alt="Still from an AI-made ad film" decoding="async" width="270" height="480">
+                <span class="reel-play" aria-hidden="true"><svg width="15" height="17" viewBox="0 0 16 18" fill="currentColor"><path d="M0 0l16 9L0 18z"/></svg></span>
+              </span>
+            </button>
+          </li>
+          <li class="reel-item">
+            <button type="button" class="lb-open block w-full" data-src="/events/2026-09-video-ads-with-ai/assets/video-NgdjXDhT.mp4" data-poster="/events/2026-09-video-ads-with-ai/assets/poster-NgdjXDhT.jpg" aria-haspopup="dialog" aria-label="Watch AI-made ad film 2 of 8">
+              <span class="reel-card">
+                <img src="/events/2026-09-video-ads-with-ai/assets/poster-NgdjXDhT.jpg" alt="Still from an AI-made ad film" decoding="async" width="270" height="480">
+                <span class="reel-play" aria-hidden="true"><svg width="15" height="17" viewBox="0 0 16 18" fill="currentColor"><path d="M0 0l16 9L0 18z"/></svg></span>
+              </span>
+            </button>
+          </li>
+          <li class="reel-item">
+            <button type="button" class="lb-open block w-full" data-src="/events/2026-09-video-ads-with-ai/assets/video-QlcQyedK.mp4" data-poster="/events/2026-09-video-ads-with-ai/assets/poster-QlcQyedK.jpg" aria-haspopup="dialog" aria-label="Watch AI-made ad film 3 of 8">
+              <span class="reel-card">
+                <img src="/events/2026-09-video-ads-with-ai/assets/poster-QlcQyedK.jpg" alt="Still from an AI-made ad film" decoding="async" width="270" height="480">
+                <span class="reel-play" aria-hidden="true"><svg width="15" height="17" viewBox="0 0 16 18" fill="currentColor"><path d="M0 0l16 9L0 18z"/></svg></span>
+              </span>
+            </button>
+          </li>
+          <li class="reel-item">
+            <button type="button" class="lb-open block w-full" data-src="/events/2026-09-video-ads-with-ai/assets/video-RfJWcUTk.mp4" data-poster="/events/2026-09-video-ads-with-ai/assets/poster-RfJWcUTk.jpg" aria-haspopup="dialog" aria-label="Watch AI-made ad film 4 of 8">
+              <span class="reel-card">
+                <img src="/events/2026-09-video-ads-with-ai/assets/poster-RfJWcUTk.jpg" alt="Still from an AI-made ad film" decoding="async" width="270" height="480">
+                <span class="reel-play" aria-hidden="true"><svg width="15" height="17" viewBox="0 0 16 18" fill="currentColor"><path d="M0 0l16 9L0 18z"/></svg></span>
+              </span>
+            </button>
+          </li>
+          <li class="reel-item">
+            <button type="button" class="lb-open block w-full" data-src="/events/2026-09-video-ads-with-ai/assets/video-ZkmdtOSQ.mp4" data-poster="/events/2026-09-video-ads-with-ai/assets/poster-ZkmdtOSQ.jpg" aria-haspopup="dialog" aria-label="Watch AI-made ad film 5 of 8">
+              <span class="reel-card">
+                <img src="/events/2026-09-video-ads-with-ai/assets/poster-ZkmdtOSQ.jpg" alt="Still from an AI-made ad film" decoding="async" width="270" height="480">
+                <span class="reel-play" aria-hidden="true"><svg width="15" height="17" viewBox="0 0 16 18" fill="currentColor"><path d="M0 0l16 9L0 18z"/></svg></span>
+              </span>
+            </button>
+          </li>
+          <li class="reel-item">
+            <button type="button" class="lb-open block w-full" data-src="/events/2026-09-video-ads-with-ai/assets/video-gMziBymD.mp4" data-poster="/events/2026-09-video-ads-with-ai/assets/poster-gMziBymD.jpg" aria-haspopup="dialog" aria-label="Watch AI-made ad film 6 of 8">
+              <span class="reel-card">
+                <img src="/events/2026-09-video-ads-with-ai/assets/poster-gMziBymD.jpg" alt="Still from an AI-made ad film" decoding="async" width="270" height="480">
+                <span class="reel-play" aria-hidden="true"><svg width="15" height="17" viewBox="0 0 16 18" fill="currentColor"><path d="M0 0l16 9L0 18z"/></svg></span>
+              </span>
+            </button>
+          </li>
+          <li class="reel-item">
+            <button type="button" class="lb-open block w-full" data-src="/events/2026-09-video-ads-with-ai/assets/video-hRpZ0UPP.mp4" data-poster="/events/2026-09-video-ads-with-ai/assets/poster-hRpZ0UPP.jpg" aria-haspopup="dialog" aria-label="Watch AI-made ad film 7 of 8">
+              <span class="reel-card">
+                <img src="/events/2026-09-video-ads-with-ai/assets/poster-hRpZ0UPP.jpg" alt="Still from an AI-made ad film" decoding="async" width="270" height="480">
+                <span class="reel-play" aria-hidden="true"><svg width="15" height="17" viewBox="0 0 16 18" fill="currentColor"><path d="M0 0l16 9L0 18z"/></svg></span>
+              </span>
+            </button>
+          </li>
+          <li class="reel-item">
+            <button type="button" class="lb-open block w-full" data-src="/events/2026-09-video-ads-with-ai/assets/video-hsNTHFFB.mp4" data-poster="/events/2026-09-video-ads-with-ai/assets/poster-hsNTHFFB.jpg" aria-haspopup="dialog" aria-label="Watch AI-made ad film 8 of 8">
+              <span class="reel-card">
+                <img src="/events/2026-09-video-ads-with-ai/assets/poster-hsNTHFFB.jpg" alt="Still from an AI-made ad film" decoding="async" width="270" height="480">
+                <span class="reel-play" aria-hidden="true"><svg width="15" height="17" viewBox="0 0 16 18" fill="currentColor"><path d="M0 0l16 9L0 18z"/></svg></span>
+              </span>
+            </button>
+          </li>
+        </ul>
+        <button type="button" class="reel-nav reel-next" aria-label="More videos">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+      <div class="reel-dots" id="reel-dots" aria-hidden="true"></div>
+   </div>
+  </section>
+
+  <!-- ============ SECTION 3 · THE DAY — full-bleed band ============ -->
+  <section id="day" aria-labelledby="day-h" class="reveal bg-lilac/30 py-20 sm:py-28">
+   <div class="mx-auto max-w-[1152px] px-4">
+      <h2 id="day-h" class="font-display font-bold text-ink text-[clamp(1.7rem,4.5vw,2.6rem)] leading-tight text-balance">
+        You'll leave with a finished ad, here's how
+      </h2>
+      <p class="mt-4 max-w-[60ch] text-ink/70">
+        It's hands-on from the first hour, no slides to sit through. You bring a product, brand or idea and take it through the whole pipeline on your own laptop (script, AI-generated footage, edit, export), guided at every step.
+      </p>
+
+      <ol class="mt-16 grid gap-x-10 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
+        <li class="bubble-card relative rounded-[24px] bg-paperwhite px-6 pb-7 pt-16 sm:px-7">
+          <span class="sticker absolute -top-8 left-5 -rotate-6 text-grape" style="--tint:#D8D0FA" aria-hidden="true">
+            <svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <defs><g id="ic-write"><path d="M4 20h4L18.5 9.5a2 2 0 0 0 0-2.8l-1.2-1.2a2 2 0 0 0-2.8 0L4 16v4Z"/><path d="M13.5 6.5l4 4"/></g></defs>
+              <use href="#ic-write" class="halo"/><use href="#ic-write" class="glyph"/>
+            </svg>
+          </span>
+          <h3 class="font-display text-xl font-semibold text-ink leading-snug">Write</h3>
+          <p class="mt-2 text-ink/70">Lock a concept and a script tight enough to shoot in your head.</p>
+          <span class="pointer-events-none absolute -right-6 top-1/2 z-10 hidden -translate-y-1/2 -rotate-3 text-ink/40 lg:block" aria-hidden="true"><svg width="44" height="22" viewBox="0 0 44 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12c3-3.5 6 2.5 10.5 1s6.5-5 11.5-3 8 4.5 9 3.5"/><path d="M25 4.5c2.5 3 5 5.5 7.5 7.5"/><path d="M33 11.5c-2.5 2-4.5 4.5-6 7.5"/></svg></span>
+        </li>
+        <li class="bubble-card relative rounded-[24px] bg-paperwhite px-6 pb-7 pt-16 sm:px-7">
+          <span class="sticker absolute -top-8 left-5 rotate-3 text-[#2F6FEA]" style="--tint:#CFE0FB" aria-hidden="true">
+            <svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <defs><g id="ic-gen"><path d="M11 3.5l2.1 5.4 5.4 2.1-5.4 2.1L11 18.5l-2.1-5.4L3.5 11l5.4-2.1L11 3.5Z"/><path d="M18.5 14.5l.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9.9-2.3Z"/></g></defs>
+              <use href="#ic-gen" class="halo"/><use href="#ic-gen" class="glyph"/>
+            </svg>
+          </span>
+          <h3 class="font-display text-xl font-semibold text-ink leading-snug">Generate</h3>
+          <p class="mt-2 text-ink/70">Turn each shot into footage with AI: image, motion, voice.</p>
+          <span class="pointer-events-none absolute -right-6 top-1/2 z-10 hidden -translate-y-1/2 rotate-2 text-ink/40 lg:block" aria-hidden="true"><svg width="44" height="22" viewBox="0 0 44 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 11c4-2 6.5 3.5 11 1.5s6-5.5 11-3 7.5 4 9 3"/><path d="M24.5 5c3 2.5 5.5 4.5 8 7"/><path d="M33 11c-2 2.5-4 4.5-5 8"/></svg></span>
+        </li>
+        <li class="bubble-card relative rounded-[24px] bg-paperwhite px-6 pb-7 pt-16 sm:px-7">
+          <span class="sticker absolute -top-8 left-5 -rotate-3 text-[#0FB5A5]" style="--tint:#C7EEE9" aria-hidden="true">
+            <svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <defs><g id="ic-edit"><path d="M4 8h9M4 16h5"/><path d="M15 16h5M11 8h9"/><circle cx="16" cy="8" r="2.4"/><circle cx="9" cy="16" r="2.4"/></g></defs>
+              <use href="#ic-edit" class="halo"/><use href="#ic-edit" class="glyph"/>
+            </svg>
+          </span>
+          <h3 class="font-display text-xl font-semibold text-ink leading-snug">Edit</h3>
+          <p class="mt-2 text-ink/70">Cut, grade and score it into something that holds together.</p>
+          <span class="pointer-events-none absolute -right-6 top-1/2 z-10 hidden -translate-y-1/2 -rotate-2 text-ink/40 lg:block" aria-hidden="true"><svg width="44" height="22" viewBox="0 0 44 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12.5c3.5-3 6 2 10 1s7-4.5 12-3 7 4.5 9 3"/><path d="M25.5 4c2 3.5 4.5 5.5 7 7.5"/><path d="M33 11.5c-3 1.5-5 4-6 7"/></svg></span>
+        </li>
+        <li class="bubble-card relative rounded-[24px] bg-paperwhite px-6 pb-7 pt-16 sm:px-7">
+          <span class="sticker absolute -top-8 left-5 rotate-6 text-[#EC4899]" style="--tint:#FBD6EB" aria-hidden="true">
+            <svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <defs><g id="ic-pub"><path d="M21 3L10.5 13.5M21 3l-6.6 17-3.9-8.5L2 7.6 21 3Z"/></g></defs>
+              <use href="#ic-pub" class="halo"/><use href="#ic-pub" class="glyph"/>
+            </svg>
+          </span>
+          <h3 class="font-display text-xl font-semibold text-ink leading-snug">Publish</h3>
+          <p class="mt-2 text-ink/70">Export in the formats you need and get it in front of an audience.</p>
+        </li>
+      </ol>
+   </div>
+  </section>
+
+  <!-- ============ SECTION 4 · THE INSTRUCTOR ============ -->
+  <section id="instructor" aria-labelledby="instructor-h" class="reveal py-16 sm:py-24">
+   <div class="mx-auto max-w-[1152px] px-4">
+      <div class="grid gap-8 sm:grid-cols-[3fr_9fr] lg:grid-cols-[3fr_5fr_4fr] sm:items-start">
+        <div class="overflow-hidden rounded-[24px] bg-lilac/40 aspect-square -rotate-2">
+          <!-- photo: LinkedIn display photo, 200x200 → webp, inlined (one-file rule + preview data: URL) -->
+          <img src="data:image/webp;base64,UklGRsgsAABXRUJQVlA4ILwsAABw/wCdASqQAZABPm00lUekIySlJfSbOKANiWVu4RYBjVFGINyMhu4bqv+n5+nJPhz8zlRvgHrfT5uMLvb9DvpnbUW1R8VbNGKhbL7xZ0gNllT/RFC1nPHlP/DzgfuoTzHHlrEiWXi2UEVjgmQlLsX/ABbSD4NML80hzFuZw8i6Wc4Zd/MHhjQhVtX9dJR+j5IXfDzpTj3m2PehQ6k3VWRHFk8Bh/LZyg0b5m/OSuXXh/CoBMCmKMhpb9d18A8fQdW+WYE0WN5K23P7pOZlBGBbEjWtKEhvSIGo89N99R9hg0YtwCB6Yu0ZwisrDU+cHKBMrE8UwuxuKDm2IuWmZaGfBF1BJJIp9wGeotG35ff5nx8VKl8U5Uuc5LtV7+9RkdKWlmUZoxbNaYROwx6JQ2J2qjltJk7O+3jcsxfv92iTJh/115VNB8oL5FXWyWTY3kt4ll4JQR1EmRncpQOlqDffultTav/ykwlSA8/hhuycnKS15pZyUcDwf+E2grYbYax/MGZC+eHo+nwOiaUjPIpK8+4Ue2CSzag+0FU4eYLag8Ay12VjquezK+iI58ToMWen1N0CAZTnbhihHBhdXF5xWedJOBVuPk6UY0MQlPk99NuED1zxAjsxVMEWuWe7/oTtCQkknwgcgOHruuO4SbO9EpmUNWtd9F3zkn7SBPzXkr5GtHX57XeuegmNlXlqoPNUFuYnWz7rbtWKTaIC0E4ztaapr9QUUsGnduwisUfuLBoEgdLW8JlwjJuhUDcQPX8/p3GwvVuJqypQ5knUGd4ynJN4eFhpaZRtPcNwwhoIJlOOGQS7OsaWc8kKEVNk2dvcf64pCpFMjuxJjqklQYunPkdxZAaGA2WlvmimBkUnbgqjR0UsxmHk1EIMEUoEuNYmctT/DXjqndVo4XRaXN358ZYhDFkycja04RrhFkC6qjZTcS3pNkHKWTm46Mztfgp+Y8LrZA5ZKibLU4vH+d4CIPZjWeHytSWpyNOIuFoJCS3nFZdRKp4iaeCrGYXwZlnmny288Ucp8bBVlp29JVRFrnwd0i8yvfTNKzXSC2rf+uxSri+7+ldoPWSDfA4Hu5Urp+jQ6fig3zzVIxfPeNFvBs6crFCucHVWA4u7aYtf1rgrujbL/5QZ9PM2hsTOZmpZl0L2xbId+qhNGcOu7oieKt7PaMSeFhRvJyLgYzLThTxTJ621x25fkkA2SPdgW/tA0600Q5PFHnuss0E4rutnjmGGGpWTntpmN5VCbZkzCxLDJaCgkEnmDiG2pxmq76lLKXkrwv/7zX/w/ikmj5FiRuwC3qe2mJVyEopDSnBdzldkFQ6ZHMcDQJY1i09rJCQbqwhZPXtvb2xMq1rW2s9VztXce4TVlOi/pTiJciR/g9abVBNmBf1yXh1FDf+bkd9LWJ7cdiMFnOvP38eR7LIKrlcdtyEcmZ5UVBQOpXunmnGNU24YaysuJeZQ5UgAxjzw1ZoELPdn3/uAFANdu9lmi0JdOs7XBa6dpp8V0jgHBh9wmkNchT0gd67Ls7gDtOgUhJ2JFVgOsBNwe9vcxDalYE7Qldnk9+3HEO7l8ruk0vjnSMCZrEr5E9RNPJpUss2uuOMMrPi7MqNG3NG0B8gpqGvJ+2mcFWnqZRbgYYLnMWtdNYA/5PdYsUTUslcIbP1tC54uyGYsJuyAIYVQ+WoSLDKIEV4igutH8HEysFriCrPqBxXuoq/5ZA/xx1shvZ2WZjQu7q2avIfY7zj1Lv1Qf2ugPgCXepNWos/Cx+P6d7m2JQU3NQF9VvkzJSLVR6VOii12sWDwxY6c5luqXFqAZ2WP4Lcr2G3oN/xkWnGdtLk/QnVvn3K5jsX7+FX06tLlrHwP7CI05P5zDDiAtfje3jqkU5L3MAPzbsA7qg2SKsJ8i7AZ2xd1zWj4DsYutKn1di2E5UXOyzlCBSdsBI+oVyeaC17GrpVFSHhvlR/T3+shT9kT7HwtL4lprX6Tx0K/h8LNryFs/Uluj8ZkLJKgOtjr+Cbk7kDFesboByx576CdvATspGW19Eyw0cpeEy7uGuK02bW8r/z55yJPhE10Pzy/10FA6kpejl+uPxrRgHpuNegYxb4viBaDbyt+tSZSMvK/poXYW5WgdTKtJOg4JMwSSVz2PTalnhGo/hbVaiaRV/u5xC7WTOaJQvH8O67HghVbONs7md5c6pkNlwlpTkcOUaWxhalshvrWqQzx9lUVkwUaipVt6ifrwyPIc338RIc2DUxm8SD3ffmqXrMnhppdtyJ2BnsJAEl9VWiGBlpKoqnNcFigfKviOjHf5hhhp/kWzzO75GVIfN2+LiwhOMdrNXAroxsyGVd/Q/9M+GCPkMOpX5RZnw28A7TBT9dqnPBLGzvXiF82daLLGgoRmzJKwLBUZtOPW71IRqQAdBLX/Q2SyYCkr4DfWPYJgAQYk8ceTq74YtAV5frxiEDyYmq/YKraqjM1MwX1eiHIca5EEFH/DleyZBwTRghZDNYWJPheUa0mzYfE+EChYrzXbWwdSBMnuCarzE+gotNm019UiDfBZeC5NoTfMg/aJAFUNtNTCV4Kgs12rSfSnocDGPfIZcQNIbnTi3z4/a6lEnQ5mEpwABu4LV+WTRmVqyg0wLNTxp7FMuTRrpe/cYYetVgMzyEUEWXAJG1lB6ooVs2RPTDwpdtQzOhN+T6u2+H6s28c55fh4VokdFAfRtHozgpPCE19yYTsY+YeiP84N2lrwhAA/tGFNvMbZVjDWvEx/3vUb/1stK89hXg2/3MERJHsTkQL0214m56FU7XM2EpglYD3GIZjRA2RzZn4dq8ClX1028kt4Lg2qjAiEiZXDvDDRQJSo/S4qq0IlTYFvDcZfO6OkoyPuqzxykc8iDRPfhHQ71v1XDnoy3U3LB5vRx5MnbTcwP4WlUh8mVxFgOF3D7cnK1bEpyLpLTCCxb7dXdyQJrgWn3+W6dGUz8Y2zKkmFzdyVald6Jw00YqJUdREKjmBmxnm6MOaDY9KUvYJRzFtVMQfGmLD5Fh5OuqG4HCoX0FP5qsp8sWLxU3GQjNXPDK5S2PA2m65ObOahhy9Sgt0B+51NEBFtQyM8wxMWX8YrcNG/TY4cXaEZAvw81Jo49UcbmmNm8EBxbDviHJBIm58RjwCjjefayNlMtf3tx73okmLmzrX2nVy3SoZLU8+x6v6BvwYxAeGHNkrMkhEZfCuFSavjljLgzqvNH+8AohiJz3/02+TKhwm9e21VSjWIX5xIDdDVkRNSOyv1ekPUawXE3GkT+P8EOE9oSgAen+ZzvkN6+Wd4DR5LcN0ZbVGm77em+6FwYwaZ/5Yctpuzo26D2wAJC6B0tipLWHdGM02c8sjW54RJ/fgsUWyUVBzbN5NES9gg0ctyRk0gl/XrJn17puxkMgcjIzz8L1uB+QInVSIr28eeXGM0BffLxKQBgYKnvdc2XyIX8cB2vc5/ZNfYqq8QK9/DkipnRu+UoBtV3ETrsOux0blI7u3O4n5cxJNfxJZtpoJ/sievN3gy/641KnN11rdcmUndF96RPtlMnwe2lVN3fRs9cGPYRfFOked7L+vHDQyTv+bts4bzan7aCIOpCfKHYxAo5kNo+cF2IameHW9jhEB3z5nqu0aaWKumB1oDoT5HMhIvO3rH4iNv8mWr4U2ejgkIoyOs2rkWywrMzp6a4L0m+W+823C/gZwS8aDq7oKmClj0/azaZnOHoDK2jnWzsSbzy4Kgabycd4LVhNrokiWm6Lpm8Wd7PoR+dbmKSJrxQ40Ndo6vTRct85/xIkXI5RJz6Tb7Q+eIFYDdXDtQ8cv/8m6EFCR45SAycEALE2/AkK3FbeLj2khL0Jgc+VwugWz/ViCTs10jDlsjnfKZuUZ/skOxmCnGoxgPdqV+A0PKIy40gdBNG9LPjW6Mst000yHN/TuycZAvOFZs2Rwc36M5N/HkZZSZx8LchMAC/I4OqzfpAXeWblu+szUAWVU3rXtY+KveOG8kwfTGUpAqfy2aKrlVy/4nOUlzZq9GRXvxLodjTW2HAXVuObyhQdjr8GA8XbcD4Hz0rkhwc2Y8zThUvYx7/7cebcyfQhgBsNyr3e7AzjoSccZfYOIKeTgGgE7GOqCC3q0z4ip2x1p8ij+eoorm/EarA44qcZN4Ci9SKBnO9almMVHb7PagMW7bpsKPManlhUaBk7H7kADKI91v7fFD0caF/rNS0fpdrD54iq9XniexixeKUzFD64c452lNuSEme2sookoy2dAi4M+Iw1hBd176RkOMHsj7fAxOzE0FX21UgZLl4nx1/bAfnoK3IZfk+QKQqf8IWckcGoIaSW5BarkQ4Bf6Ky75b3kcPW10Lmj09qtny61mFr/uGHDF4PiLPnwG2g7Ng0Hjm0KlOpumoJULb5sP9c126Zp96oRlSAt2m88VsEkWyfrbwtBx6G/6+RgPImbUQqebCM1ziUYezN7Mp1j/Dtsc0HubhF2KiVfvSa0/Srj5jTAjzrsIStCJzH58PysyBSeA/H+s0FUTEGiw+Sa4E4xgo0LT3ACPU4yByWZR27npKycwwVlTGAM1LNj+LzZ/N7Cf0FxCxfdjlMyZvR+2hBy0+79pq6fRx5cLAmi8Yg9O2lNKVKmRlUfxktCbfuHjley47a0eYt5ha2KXHs4v2MxzkttkPNfdmZ81Z7Z3Nyh3cvFWtwpZu2hvUJadx0SeIBepXdOjGYSbi99MgrZWJP/bgZTJUHlEULBt+Ny3imQgqYGJ67d/5kly38pFfk1Otfuv91uTG70edvKFwH8schztP6L3v9fgHXQsihYVzJskOKHOsGUQQAgItCsNFZUm2fLW3wt9orxW+93fD42F5yWs8unTq7eT+XDsmAinRMeRibvxtLBlIGBAfuuxgbQhmZfP1+E6mGQUUmUEeDjWzKAP1pQYK0GZWsITTat0TQ5QPe3UQShpc8iQVpx/pA+5/HJxlXLZuwbXgcvLVuYiSJO9l0OH5TlBr+11Gp/ReWgzSX+F6nZb4jdZUORZYcaNPQ5NmkdABmBEVpl88/zHRw4AE2V+aN2dJgRTWuTMFljvcxyrBmwOgwZjDPj1jZHolZNMXwE1fnwmK7B5y4UafkfGmLsvdMm64StWhX2Yusn2tbcoi8r2465ahBapxZ6TAMfrdB+7b8OfEmCWJ1RL/8V2LsnC+tYtvbbETunGzxfCNR3Bwha043Td2EmgAHgq5l/lakqb0+ACJdcvjTKp6tEUti8EL5YQ0U5QuvDuovLTxzEGYxfrptd1dau2LyQhxrmhNRA9f67XOelj+V+H0Bv72tjF3OBsoeIxHttJJTLyOOYdhjpv9uxxMOSgQOI2GgoSBmvobq900fknOfzrfkujzQulNZkRq5U0tuFb7VAnSId72c4O7y+PryicHB8VatecDRsx03dwtaACo0xLces3ut6na8OVspKoKwOcaxDIWntjlBLJSUlQAAaMlGxcJXnIE7VDFNRSi6a7RrtucdAur7z3wPCj/WdIZ9dyg1+G0n/tBPifccwM0UvzrCI+YkEldHY+fsLNaDyOFey/Oxcu/KFCP1FWUx0ipEuWc8+NJ7doesnLXSbfszb4S2EhGe0JR/YmQUg7x1AIJUNyCn1YvRg99zrxjRBODXacDgpZcUVbFj8JCa6be1eqmA/uGz1anM/AXMCBkminMx9FpfycM+tYaMjzjo+QtfU04CUZuvUBah0KEa0OVvQ75f1j9OkzbWvOSqT8tTOv4ihUc5AxSwCVDIfHBfRIFRuBv0/BFDZZ4DVQiyr+iyyS+KrPhGgtgKUsJ3HZdqcOgS4Z+bdcnr7HM1S4R+5J7SSeXglc/HGd6yUZRMRY88tq7OfU78Edj7FGytoPGcKZBToExNrWI1g4mqNNGeYQ/JcLXgG2tcjEj6lPHrZr6RmtX7usH9PTZ6OjLgLyvOEirkzoKjMYP6fxGuU5Px7uoHbBLOt14ASynGFA01+9dusyQuHrAituFOnj7S0wTcttEaaOdtkjkqPlupJeqKEoO23t93oCVA8wI/qkZC2poKusKX6FlIFcG+OZii0zrBkKZ0QV1MegOiNqf2j/lOCbxVl7GdHclc115duL0d+cVA56xld7CiIW1KoL00F6w5lVWa8GKIDIeRC2BRKcW8Pk01Fvk6+iC1rwlqO5HaIgvjfheE9n49D1CNJFqoylA4d2rnXpWQDTfkDMdX6zE+LgklhhG4iwqRIoeMpFMaDVYzlzdfH64uvgJ6xheGJ6qRqnbPksZeDh/p8Q/lfpjeJG4UgXtwzywJ1aNCTztTUGZr668CclCzHK48B7VMRejeQmb0kiodiz6Bix2hr7HF6D84NTcMrZP72f1tVtz0O2IdyhfwRQdwai3tRoO9tJS2cw6sZGGpw7il5VllpvQMQyTHyMETPeg4m+5owEuLD5CPTPgLSPrQPFYiIqaHONBOZXa5B0TbXASIFTgLJDo4/AXZ7ofWt6QCfKAmdedn3qoC2MYP4gmSXqmHA6R9569Ma27YMKMa/t1Qzh8FJrS1kCTif85QxEbcePv1ELNaacKI6oWmNRMYmQ1KiI1f1SxBmSHAtCJTV5Pz2mQJhlRuVMqTiQx4dkVYWJqwdFDVUBo2EymU+fe2TOhADNJjLpehsPnJisTIY1rNZKT2ZD3TIoDt+xGWrakVU8uQu4g0MyGm+gjlPlvNTNrsY6B7xagVNpFhaXV4L9mGAkoWTTr5gxrKX4YXu1Vr6l6CIeP2hXz9AHlfu95yJigVA83mX+7OH/xUq/2cdPJJhD+s7MO1iz2Ii/Ej/0p/0cOyKRBq/UN+iQOHOEJ1sG47wSpoBjnB9NGjQBW82aJ55dzO91GwCBKmCnN7txez7y8hjbXN9M1QAYXubP1ZMB6hk0PzVG106AqQGbhs58bswab1kQ2nYAVAaOvuJUqLvw5jBo0OoOav+lQAsQ0HzknKKlGak6h4Cpwap1ES93uw071ah+an9KOrgIOnDz4A178UMIgEugq4Y5ebgAJhMdrEs3PsbOK4L00zT2EAWNS60F3MPp1YGWJNu0FdkQo1Uy/LTvpzwfE6cJW0dIFo/AvoHDdlix8eYiUDw2Mp45xUG2d62RAt09UE4syFDfJ1QsHrTbiwTRfJmYftME8wonAJ1dvqkHcr88C+zZugGebJ9OuiwZ1k1S+pqGKYqF84v6q6q14Jg5wOEAHS2umXonrD/3Q5WLxQHsviDgeaP+PFTbb0mrprhHM4Lbd8aG0/cnTsNsC+ULz4GFtcODBJ6MMlrYoHvlvxYC2GKMfhroXLjRCsWBWlGBjcD7YDua77e18cuozLbOggABxITnZ3evf9OhDI+LhnvzwUs28wpQByctBpTfwyrT5Rzxn9hr5kTsYe3phJU1a2se6DpExWuSc8IRjXLxAzDe0BA/HZB0/vJ3d6EOdd8sllMuGiDnHzwrg/fWNgEbLZZE3Mry88R439O2V7aUKOqLcZn4KZ1Q6/8qemVyLUz4ZwwjJiu66j4V1vMOuQRmxB4eJixOMnf8wd7NKav1ZFB+Gto46vWQPxj/YuD/VNj/UEg/xWotA5HsRxUDqJTS658A1i6Ea4gIriKkBhzZbLoTK0yXm0jDZC0A83YlCvvTmQiVViWJeLs8pei/mZV3EtrBdlqaccFmX6ZrurzSkWlLHRdtj35P50Yce0ZmK3mgEH+xR5iP0QD9nxgWjJxd4VuEBPoH4bAE3hStk5PBnJQp0T+NEPh7DykThsTeLeuP3VuES0vjsE9M9aSOMvA50/hrbutK8beHIWLtOjglVjQFt0WdXXvWXWsNAmVydg8usgqsms66Jsq4qTd2QXOy6RyMSK1qnhxWr0RXQBq0P1ickpKEsdzxorJ9PcAN9lDECUSygDfMEFCpB7KHH53xQK16ADsMuQ3D94D6zfpeQhlYDzp8XRP1SygLbX/5iHTBe8w0TTLT+cutK2v6CBp7IEMydawbIXdV0zOV0HpZlVH3MNzX8gTqS7fGYU5I62bLv6S0BepOqK9sxfNAFUiADf1cMaES6MEuDRmSN0oDXLa2I9scFRsm1g0KdnWN1MFE90SHvYzPQO4TfatQ3oaDxir3wX80jCY7IGqeatugTfA51fcUT9T9b+TFkMoKN4d+2umm4HoE+RIu5uu21NvP7LjDPjEsAn85XTpcVUMuvxHXLSvM1HVoWPABSCvoscdY3ywqFUMJL2StvISx4ZjGO603s3vZm6cqU5FP+CFr+J3dE4sLCbDdvSoyMsuPGLdfS1loMAEqFBVfnEkZm82M8nhZ+aw2sycM5PfIuU/cmauDnBCEDuRjTFXFnZuZNbGN7R/PUeeEKSFYAoMHudVtbtEWMimlbsZC0uLqPqfnVpGqM46z73hLPeeLuLx4b5LR6K0K/gPnG6Lgu6pWghr9fY9/IgV/LZ/sVq6OrgPQ08pJbeCXOasVluFXI2c9qznkU7zuju+8Rz93LO6ZGdmAx6+6pN/a2dkKx/Tv7V5I19rGZWkWlHV+4cP/drDsBlNuiD27a72YujR69Xn1WRNbuGtwD0V33KZ3D+ORWKE+98K7ikhzrae77+jHEak5lngAFwr5WEW7A57JROfnqpufEc8yddCrVAr5dfsSlS2XbvoHK6tByPYPEDnpgcJfU3zaizSbVWMHxvzXpXDfmFYzDtyC/DwMdpjzX/wDGBzkq1MMsXCQ+aXlamQO6egfg7AVBNEbCAaj7puskm/C6g++sBsmhDcW/hLvUCgCrMnJRvUdYhvdZaAB9B8joPjtaMvUeZckSMXt2+VJiHHLsRa/ErwKESV148oRRrQ9DawPsoBTb7ZRa0o6XW5vJKAQY5kB7GigAAZhiuKULf0ish5HgozTlm3shJBtLiAwBJ1GF4Fn52cqdd1tZS6jvlAyrCFsPbKSdlh3LEkkigKBHxZBlEzqrQ3IPSBM34AThv10Kk/Sh2g98rH8f87BjcAAjY7Hvg8Ccm6XzTRgX8Y/hmcTnwaxlLQ8abIjKrxqC8UUJd9bLYjG1I/NmqUNA0quDLAOPE9tNLBWdmaf8xIH4DX5XUoXrIMQBrD8Abbzff7N7oLrpRG75G544MT7uvVm0upzb+Bk32xc8giZxs1tMj02c2HtRrJgKXDZBS+ZvHiSBpCRArIWtwdqH/xeH5GEcqLLY0I62ek42OO8gXCDHjhCvJHCqBPqF1wZr7Kgt8myXTaUZ1Ockt0UUKTld2G6tctI2k9L1xIOSRfkhw/Ktz+o88RAsPuI2fykkEe6LEoVcNTMbU/dOXHXLQlbXGRevtOuuvX2fccMKK8CWT1PhbNKnVyYk0XxITRAJtQ6TJ2DMHgHJpnnOST3zm8KDlzNV3WEeP3fH0UxUr6KYrKaXJBmQpIqEL3/U7xQllgspdsZ+L/SA/l6Zxdmgo0HolOAuOtGhLbrHXhwSsC/r/z+LRapIFJVw/x/xiYbuuIXeyIxC0miDlGS8Ad5cl2jVJRIicwQtqPl6ATJM93rI9TbZwMH/+r+NtJ5XbdpEJyV2enpw/rutVgZOkjEuLsbEISuEqiVgKugmGGC1VvDuK6HIkwwedT759NZp46JZVUgSs7ibUqXpy3Vp+2GGDR7ViWNko/ADyCw/kLnWPB+ajeHM7t3w7ta5fKl7e8/Q0V/ZAes17gqQeVU7AJZRixOCgglwb5H2JfmtkU/1scj/LfqdwI/A5r0c4d07dUUptqLUDOsJtgGGUhpzUvu/WsgISbOwrOS5GixLTNEn6ZpDwrTVV9h2pGvIbmBgSM8rtDYyZwtH5rZ3VakwqQePdOvatKH7s0L2f8kw9cz3SBoOUH4fnwUVhC/fIsFt9QpwYezH1QCYb7IdGSW2niP/DsPyMEqYjBBjjbNixZc4vn8P1j9UkK5h1vRQVgoxOV9VtAkFCE0qeWoqp0KVu0HXwdGOo0gGqwIhBQxJ/m0R5s6ohVGwEo/WFIKeVxzuB6SSjDxzL2+TUpa3cPYCd3OgpJ8FsJZ7uhESiZ3rmRl45L4TQCzJY6dkIYcbCPscIuM8oJ0hFS9Nhsuz0Ke2FPHAbl0YZ0To4kDVld4CKo+puWd8Sbj9NUKu7OvgTFnSAiUrrLrT4X/90KqwwQmXLZe2sw8HnToz3X0gPst7vT9vrBtFU6E6ocUUHcZWVLYYmFFzQ0AJgUYJcu0346Jbau+REiD1bU1+nCSWTVPWj0oJML/rP7XNp/7LtLFmZLGR6dMNd/qoyOVcSJnGy7jlQtFiW3CTTg7uyWbsWIuVemPJZ7WG8cl6Zu6bqsi3fVviNdFYhBJNmGFfIQhLIkYjO0hQqyAfMvmBqD92px7j9c9ukY1qZoHT3rfeOMft2tZnQ4z8PVtZs30u7U6m+IFVhltuJceoeShrcoGJO82yBui6EWPhHKLdcBtfWzc0NMW+SNJL6fKdy9tJWwtLLHb1bojwrEYA9o7C9B/RG2eRhXz6XhD2ALBM3ZmKkABzZMe05zQno3K1GxWK6eWMc0U5D00hgRg7CWklRzKHXumfzOff1GUzLBdpwlohXloWeh2ZQL9yrYv5X98aaZQevrg+PRkKCzkgM73BZKNLxgOtEVDKTTynQK7JvauzKw3aiXLRVNv3Ak8CkqpeIHOccSdfG0dM1pQOGYBNm8H2uRv++jjCNNZ+8p6L+ew9XhmKvLbrNM9ki+s83ty9tpcCAxOs+v5Kea/LYSlO1TzTn9qXS6F9msE1RoG1JooqpagssrXP0qxXftDh4/NMAp0epSiSQIibB9IW3GSaU+bBwji3oBq78DNft+ZZwOfneerZSVRohGpVeR0hueiqx9aAHA9e+Drc2og0eoqBfl8hrClx4wko2aBOnmB8+QsRm3k6zu5Z3URqxdCIHeA5lvbmAHdS7LMgWglxoswyA70E2Xrmnp7TPEsMqLNIcouZXxt5HGn/LBm9rWwfgsE1Z5a11I+ojHrevt3q7Uxqedd6eX0teF7xtUCwss5Bqf1genDrqWJYpxSUQtvXd5VUENFjLBrkR6WzFnq87vTWSYteQ23A7pwg/2k76qKzea+m/Bew6bmE66Eaa4h//76xNQpjJTeXzvBl+j/ryDxMGmNWtVPdRka1/HZce/2XykF/UGDOjN3zTznjizlbIXbyaEIGQqzGs1FOXQp3Phy3HcmJ2acELrhyUb26jd4xrOpzm6+yXNgy2Pccjzncl+ExD9yFjrO26J2ZWeKCwwUTIpvGN64gcAD4PVJspJmhQu7OUOhtD1c6EH6nkEEMfdkNqDtd2zZASzA5fHKhIF1hpIsghYyICUvkY50sut5ReIrNZZnfR0uBZPjE4JxzTB14BNUzMiNfcr7LhS/UKagg8hCbbvOts1xi1wgZwAAABfwSnF8XNqGOoGxD1xfUhyb3k+/ZUqktRfSdAjp/JSX7nb1CKCzDrqQM62Z4/FHI2+gY5jvyWgXDaCPP3NttuTGlaoqRa5WVoYfGoZlqK/Xb908EEOl3WyTkWyqyCMh7n1elTlCld7WljRXOdNAvswYqX56Ss2enLTHAo+yXbeN+ZDk9CjczDhSnIA+lC0x0SErw4pPQD/eyyNK835vl74phab6lSwiMARqmeGzR29hAlPMQwT6SRkgJCR0QF0642YrD6XniVp1aVydHdM/kcvIvgbbK3vQhM9JnkEUeexbFnCPxZP+m9Qu1L3exW2LDNxZT3GpNfnpA6l84zJspqrgikhFhh+9vZjYhrCw6cyXjo4/rmzz0YzOAaYnT0Rq4cmMgKTYY6BlTds94rGi+8+ZpEAO1xyaO0Uu36lstHl2r+9fcMzrBi3oDE0E6jqUVgAGiwAZCAiNKmR3T4GOWuEoMTnlm5P4TkT3MmrAJ0jPcR4zHe8kXTXxKLhUv3q4dp8RtXzPR/73OWPYbskEMBLAUxLSxJ6v+bM6nqQvNtX5u1pOT/CJy4XeFvLPYgmoqo532oM+h5nljrmw31ufeG0gladWfFDPopF/lRNqjIvphce910SnPVFBRNIkhxQS9XVa4gBIcyJnov0o9Y1JdSYoyPa8nhLgT3zAjqwUK17uylKqPEAA4PhtmKIzse0BPLkAWwnZys2XqAOy95c8vToeAovJDMOIGMXbgcEmtz1ppDgtCmD9Vm4DcSwsUFlvRRcpKkfjVFglLAe6uHz+QQcJUjNZljK/QoyczDQwrPC+cvxnONJaAv77zjDAF1QQQgB1g/5qk7W9m7wjL4rqiV66pfb4mtoMQ/6ZquYzV272EdHRz4I5XQ+4cVJNdm8kC6n+QaH2VNQJs9oplZNIA+ZxzlAAKEAxa8OuBte6heb8tcC1PyCK8BCJA2iJy4XXv2CiBCmDcdBVnSBgf9lN/gXusvqglPZ5IfpjfDJoW0bMiQT+zNRiocLUu3CBTiB6P0mL/t4FDqHzOKlnQBviMJWj5hWB+gUGzV8uZffcUReBcj68akWorqlQjigTlzRdUnArOjIyhYBtUMLApFs3v7OKwvd40+42aa7cq4+xUnK02rmjKBMN8h6FGe7VLTlNhPFnNsEVhE07TJ/HbMcPsYdW6reJIW05+7HK7TyIF4nwBO9hVApzkBAfSTex9J0BZ/C+wq32KQ3TvEQGiO7uzK3ZHrQxnPYxZFYYSG/dLMcrl4SVrcfwAFzc9Rf4ta31nM5UlLZShz2i7j1tLAnE3dhyrJ1FfFif1BgkzKkH84Sibo+aLD2nc9x/dhUKnBsn3XL38bdDiooC5o95JkgVrxETg6KTWsUiZwpajSYoN8rylH+wjEtr/t2hd9D1TFqwWNLcN7JGjd9p/sKDGjDxOqhIw3zpBOCArKM9LWuBEH7XaDTukg4FzgiDDtxbieg0kLxDVpzrelr7oYsWy+iZCAXAQ1mrq7crSIRelqEL3s2P/P9DD5anOZbnBzfHCJS3QP5B0QWoT1cTi2nvCJs90Y5z3ggPvA6IwuIBgrJd66KUClwtyK87jGx31FDli6EJap8xVT6conyvXx01xlqTK8LORhvayWQ9qG/ILuX4gcJp45KuzXdFBqumos0m85v/i67R42vnsqRaWqnKvgpU9uSMon5hw158LpCea25eOpeR3a1Fp5lxX6v+EZfipEqmkEPeL3bxE9P/JfRwSeT6kDHxdVhpGTRA/eq9YmWzPrxJAZcdbzuLNxRYeoy/M6wnHxQ/E7MespXyN0kAlK+m7tADqH+9G+0WHs4IGGT3V8DI0pD/p3RyDxaL75PAr7zu2V3PMNipN/wgRfeMcp1sBLgV+63WwDZZ0oH0UKI3LjTm6/BB/5NA5awm3z00sMaAlyyBFiphVBJlzd3OwwqS307FbV62H006bde1c27FaaYaL+v9coRLlBSxo35SfD9hxwixpMGtjMc0DHebAXNASDmy5jz6Z9ZyrfTLRMm4WfDRmAveLZnu1bTBrgza/5GZ07OZ4fjzpUxQBDfAhD8LNpcSlF9w2/ylL0aEU96GOZp6Ltc8IX4+9A6k+pIb+IpeS1mPI22qX+GK3tFjlWTNOUgWO8CzZkUnmgwDVxiF+mOvaAcob799qjT86V6tL0mOvYLb6QdrCymfTpkd3EDib2zHwHvvk/7G7rVcw21DYMGdjVBgKnLf5Is533iwermCDKm3KQ3q8WFk+v2v60oZRet8WjBPUmaAtrmNpdqYBtLL1Ubb/wNxgRtA2lihsP/2GKWtDtoFtMmE4H94dN1yuUGIZh8bhzcYz4lRoo2qfblAvYYH2AAJ6iuf6iTc6WNmGQg9fjen4SgGJk5D6BJIaXbgw7phIp0FBE9Ox9XLuyLCu2+CLsGqXRp9agiM/Fjt3UfLKKkBC7tA9t4+SHVZ+FNf4rKDmcZhxXosPbVXiwKE+pxD5zkTCRz9tmJMAQxKmiczypOXXy7S3IKQCKDhTyJFfOW9HcnhDMF0vlSuFR8jiWsmtisLD1/Ldl7Ua3c5/L0BOJ4IlPdLW859Yg6UEBug05gxpX4O/oh/Mg1yirgxgO2WjbyuX6DcYrjftdRMKMsgujY8Yjc4mcv+6LmQnn7OWXip/sTLNMLECBlOU7vOMdPo9b7rB8Aiis0eDItW/N6AU8oN594vEbSYFiTSx/tQbKMBsNFflikfOc+TQa2S2y+aZJmulhv/DSjI/wBCpcWVkZuEoDs7zDuXTBIDoZ8WTcUGVHNUNg6JXXAcBpT/QAxbw16I7AezSfzC8dOCbs75zoXc0G2VBnICn5UjQjbuFE9Ls7TtDLbbcDqxESogr79c2ACp/jmK2o/3TyWSp8gFFlQeCOSgfltgKFulzCNDX9emwtaOxbveUbaaUVkzDD+MRllF8R2P61+qs59VkiA1agMNeLNyIWWtoVeaq7XBJZTYMjcLh+YmiMkDdo0hNEAAGBeq+xoJMBEd+fUPtf46OhZmWkLXyAWq2opRfLQjeNrA8TRtJDJ/lugy2tBgIBpcScvPRbUXY6lkO1rZJoaBG2SU4XJDV3Krracy1u1PGDVPCeL8cqdhNlEJD89UxEo5tFsZJmaCWJgzbWOWzk05ZJrgsBA5xQmQPGJWWAR78Pnx2AFl/2LTSlcIbCUBIcZ4TYNAx+Ewq4DEvBIxd1JIPzsB61CLynKPIemkAKFipEqCn5AbgF9VCUiSe9mBjAImJSwkb7VgCx/HNh8mTNK8pSTUg6+VoX3dqwukOPsTm31N1vEd2jApvToNNbg7MQ0tfKv2/C7cG+/8/Oy3d6wPR85cMMqtbxPUXKCSVupjT4nAGdps9HMvzi+NkduFjbf95rCXxsva2W7zOGH+t4jZeWxgsD6e2vTTbVwyISd2855ngHglUFWILQyWSe9kTMwPE2qfyiawZvSlrARgtdkFYKO2weqJSArSvv6VIARVAnyY0dnnxrslXGeyFUTWkriaUVZupyhQnD/SdgmwPi5UZH2odxhGz3sdaj4o67GHmDpceicsF0xh3OyWVtjCkw3o1f4HLmnPnsHiCIpwbVHGb7nJk5h/Kps4Kzp8m0sp8fuhRuka9lHYOjZdhlyx/ZO24FylAxx2RG1KXFsfOpBqu4AOocGGp5XCzfG0YscxVQPRboL6sWpsoTHAo7t36Dgn8BbcxWMO0Ltht9RHLUB5J8pM9pSBwYHVlnQwZSRWUm1HwrQl1dG/F8P7qJTqHy/BvJToRERbq9v0Ef05mHAkHGAEOybFYgRxoijvd7XNcgStTA+twBmQ5/KMePYt4bmukeTRrO0Y3Kx9EJ5YhJO3XT3ULym9SbsqM5c+H/RvX4rlNN6ZfXdyWBy4iAB6/6eFOkrAcejsPJ6CgUMlIRdF/0WbMu4Ae1AEAAA" alt="Sameer Z" width="200" height="200" class="h-full w-full object-cover">
+        </div>
+        <div>
+          <h2 id="instructor-h" class="font-display font-bold text-ink text-[clamp(1.6rem,4vw,2.3rem)] leading-tight">Sameer Z</h2>
+          <p class="mt-1 text-ink/70">Architect and AI Visual Engineer</p>
+          <p class="mt-4 max-w-[52ch] text-ink/80">
+            Sameer is an architect turned AI creative engineer. He started using AI in April 2023 to
+            navigate a project lull and build new market visibility, testing generative tools
+            and publishing his spatial experiments on LinkedIn until a creative pivot turned into
+            industry momentum. That work has since grown into partnerships with AI toolmakers,
+            architectural commissions and keynote speaking.
+          </p>
+        </div>
+
+        <!-- third column · achievements + recognition -->
+        <div class="sm:col-span-2 lg:col-span-1">
+          <h3 class="font-display text-xs font-semibold uppercase tracking-[0.14em] text-ink/50">Achievements &amp; recognition</h3>
+          <ul class="mt-3 space-y-2.5 text-sm text-ink/75">
+            <li class="flex gap-2.5"><span class="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-ink/25" aria-hidden="true"></span>One of South India's first AI creators</li>
+            <li class="flex gap-2.5"><span class="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-ink/25" aria-hidden="true"></span>Work picked up by local and international publications as early as 2023</li>
+            <li class="flex gap-2.5"><span class="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-ink/25" aria-hidden="true"></span>AI architectural work shown at an art event in Iran</li>
+            <li class="flex gap-2.5"><span class="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-ink/25" aria-hidden="true"></span>Works with clients globally</li>
+            <li class="flex gap-2.5"><span class="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-ink/25" aria-hidden="true"></span>Consulted on a film production</li>
+            <li class="flex gap-2.5"><span class="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-ink/25" aria-hidden="true"></span>Creative partner to several of the world's leading generative-AI tools</li>
+            <li class="flex gap-2.5"><span class="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-ink/25" aria-hidden="true"></span>Named one of LinkedIn's top 69 AI creators</li>
+          </ul>
+        </div>
+      </div>
+   </div>
+  </section>
+
+  <!-- ============ SECTION 5 · WHAT YOU WALK OUT WITH ============ -->
+  <section id="keep" aria-labelledby="keep-h" class="reveal py-16 sm:py-24">
+   <div class="mx-auto max-w-[1152px] px-4">
+      <h2 id="keep-h" class="font-display font-bold text-ink text-[clamp(1.7rem,4.5vw,2.6rem)] leading-tight text-balance">
+        You leave with five things
+      </h2>
+      <p class="mt-4 max-w-[52ch] text-ink/70">Real, reusable takeaways: the skill, the files and the tools, yours to keep the moment you walk out.</p>
+
+      <ul class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+        <li class="bubble-card rounded-[20px] bg-paperwhite p-5">
+          <span class="grid h-11 w-11 place-items-center rounded-xl bg-grape/10 text-grape" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.5.4.9 1 1 1.7l.1.5h5l.1-.5c.1-.7.5-1.3 1-1.7A6 6 0 0 0 12 3Z"/></svg>
+          </span>
+          <h3 class="mt-4 font-display text-base font-semibold text-ink leading-snug">Knowledge to make your own AI video ads</h3>
+          <p class="mt-1.5 text-xs text-ink/70 leading-relaxed">Write, generate and cut a video ad with AI, start to finish.</p>
+        </li>
+        <li class="bubble-card rounded-[20px] bg-paperwhite p-5">
+          <span class="grid h-11 w-11 place-items-center rounded-xl bg-[#2F6FEA]/10 text-[#2F6FEA]" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2.5"/><path d="M3 10h3M18 10h3M3 14h3M18 14h3M8.5 6v12M15.5 6v12"/></svg>
+          </span>
+          <h3 class="mt-4 font-display text-base font-semibold text-ink leading-snug">A finished ad film that you made</h3>
+          <p class="mt-1.5 text-xs text-ink/70 leading-relaxed">Your own piece, exported and ready to post.</p>
+        </li>
+        <li class="bubble-card rounded-[20px] bg-paperwhite p-5">
+          <span class="grid h-11 w-11 place-items-center rounded-xl bg-[#0FB5A5]/10 text-[#0FB5A5]" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v4h4"/><path d="M9 12.5h6M9 16h4"/></svg>
+          </span>
+          <h3 class="mt-4 font-display text-base font-semibold text-ink leading-snug">A curated prompt library and workflow tips</h3>
+          <p class="mt-1.5 text-xs text-ink/70 leading-relaxed">The prompts from the room, by shot, plus the workflow around them.</p>
+        </li>
+        <li class="bubble-card rounded-[20px] bg-paperwhite p-5">
+          <span class="grid h-11 w-11 place-items-center rounded-xl bg-[#EC4899]/10 text-[#EC4899]" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 17l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9L12 3.5Z"/></svg>
+          </span>
+          <h3 class="mt-4 font-display text-base font-semibold text-ink leading-snug">Recommendations of AI tools for image &amp; video</h3>
+          <p class="mt-1.5 text-xs text-ink/70 leading-relaxed">A shortlist of the image and video tools worth your time.</p>
+        </li>
+        <li class="bubble-card rounded-[20px] bg-paperwhite p-5">
+          <span class="grid h-11 w-11 place-items-center rounded-xl bg-sky/10 text-sky" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5.5"/><path d="M9.7 9l1.6 1.6L14.4 7.6"/><path d="M8.5 13.6 7 21l5-2.7L17 21l-1.5-7.4"/></svg>
+          </span>
+          <h3 class="mt-4 font-display text-base font-semibold text-ink leading-snug">Certificate of learning that you can publish</h3>
+          <p class="mt-1.5 text-xs text-ink/70 leading-relaxed">A certificate of completion, yours to publish and share.</p>
+        </li>
+      </ul>
+   </div>
+  </section>
+
+  <!-- ============ SECTION 6 · WHO IT'S FOR ============ -->
+  <section id="fit" aria-labelledby="fit-h" class="reveal py-16 sm:py-24">
+   <div class="mx-auto max-w-[1152px] px-4">
+      <h2 id="fit-h" class="font-display font-bold text-ink text-[clamp(1.7rem,4.5vw,2.6rem)] leading-tight text-balance">
+        Is this for you?
+      </h2>
+
+      <div class="mt-8 grid gap-6 sm:grid-cols-2">
+        <div class="bubble-card rounded-[24px] bg-[#F0FAF5] p-6 sm:p-8">
+          <h3 class="flex items-center gap-2 font-display text-lg font-semibold text-ink">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#12B886" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            Come if
+          </h3>
+          <ul class="mt-4 space-y-3 text-ink/75">
+            <li class="flex items-start gap-2.5"><svg class="mt-0.5 shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#12B886" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>You have a brand, product or idea that needs video.</span></li>
+            <li class="flex items-start gap-2.5"><svg class="mt-0.5 shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#12B886" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>You make marketing for clients and want AI in your process.</span></li>
+            <li class="flex items-start gap-2.5"><svg class="mt-0.5 shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#12B886" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>You've tried AI video tools and hit a wall.</span></li>
+            <li class="flex items-start gap-2.5"><svg class="mt-0.5 shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#12B886" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>You learn by making, not watching.</span></li>
+          </ul>
+        </div>
+        <div class="bubble-card rounded-[24px] bg-[#FBF2F2] p-6 sm:p-8">
+          <h3 class="flex items-center gap-2 font-display text-lg font-semibold text-ink/70">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E5484D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            Skip it if
+          </h3>
+          <ul class="mt-4 space-y-3 text-ink/60">
+            <li class="flex items-start gap-2.5"><svg class="mt-0.5 shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E5484D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg><span>You want a hands-off overview or a recorded course.</span></li>
+            <li class="flex items-start gap-2.5"><svg class="mt-0.5 shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E5484D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg><span>You're after one specific tool's certification.</span></li>
+            <li class="flex items-start gap-2.5"><svg class="mt-0.5 shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E5484D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg><span>You can't bring a laptop you're able to install software on.</span></li>
+            <li class="flex items-start gap-2.5"><svg class="mt-0.5 shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E5484D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg><span>You expect a finished campaign, not a first ad.</span></li>
+          </ul>
+        </div>
+      </div>
+   </div>
+  </section>
+
+  <!-- ============ SECTION · SPONSORED BY ============ -->
+  <!-- PLACEHOLDER: [SPONSOR_LOGOS] — dummy monochrome marks; swap for real sponsor logos before launch -->
+  <!-- HIDDEN per user until real sponsors are confirmed — remove `hidden` to restore. -->
+  <section id="sponsors" aria-labelledby="sponsors-h" class="reveal py-16 sm:py-24" hidden>
+   <div class="mx-auto max-w-[1152px] px-4 text-center">
+      <h2 id="sponsors-h" class="font-display text-xs font-semibold uppercase tracking-[0.18em] text-ink/45">Sponsored by</h2>
+      <ul class="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-6 text-ink/40 sm:gap-x-14">
+        <li class="inline-flex items-center gap-2">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 19 19l-7-4-7 4 7-16Z"/></svg>
+          <span class="font-display text-lg font-semibold tracking-tight">Northwind</span>
+        </li>
+        <li class="inline-flex items-center gap-2">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h10l4 8-9 8-9-8 4-8Z"/></svg>
+          <span class="font-display text-lg font-semibold tracking-tight">Acme Labs</span>
+        </li>
+        <li class="inline-flex items-center gap-2">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2.5M12 19v2.5M4.4 4.4l1.8 1.8M17.8 17.8l1.8 1.8M2.5 12h2.5M19 12h2.5M4.4 19.6l1.8-1.8M17.8 6.2l1.8-1.8"/></svg>
+          <span class="font-display text-lg font-semibold lowercase tracking-tight">lumen</span>
+        </li>
+        <li class="inline-flex items-center gap-2">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="13" width="4" height="8" rx="1"/><rect x="10" y="8" width="4" height="13" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg>
+          <span class="font-display text-lg font-semibold tracking-tight">Groveline</span>
+        </li>
+        <li class="inline-flex items-center gap-2">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8l9 5 9-5M3 14l9 5 9-5"/></svg>
+          <span class="font-display text-lg font-semibold uppercase tracking-[0.12em]">Kestrel</span>
+        </li>
+      </ul>
+   </div>
+  </section>
+
+  <!-- ============ SECTION 7 · FINAL CTA ============ -->
+  <section id="join" aria-labelledby="join-h" class="reveal">
+    <div class="join-stage">
+      <div class="join-aura" aria-hidden="true"></div>
+      <span class="join-orb o1" aria-hidden="true"></span>
+      <span class="join-orb o2" aria-hidden="true"></span>
+      <span class="join-orb o3" aria-hidden="true"></span>
+      <span class="join-orb o4" aria-hidden="true"></span>
+      <span class="join-orb o5" aria-hidden="true"></span>
+      <div class="join-card">
+        <h2 id="join-h" class="join-title">Walk in with an idea, leave with an ad</h2>
+        <p class="join-meta">
+          Saturday 19 September 2026 &nbsp;/&nbsp; 2-6pm &nbsp;/&nbsp; Chennai
+          &nbsp;/&nbsp; <b>&#8377;999</b> &nbsp;/&nbsp; Only limited seats left
+        </p>
+        <!-- PLACEHOLDER: [PAYMENT_URL] -->
+        <a href="[PAYMENT_URL]" class="join-cta">
+          Get your seat <span>&#8377;999</span>
+        </a>
+      </div>
+    </div>
+    <!-- animated underwater scene, sits in FRONT of the CTA slab (assets/footer-animation.mp4) -->
+    <video class="join-seabed" loop muted playsinline autoplay preload="metadata"
+           poster="/events/2026-09-video-ads-with-ai/assets/footer-animation-poster.jpg"
+           aria-label="An animated underwater scene: a friendly octopus on the seabed with a treasure chest, a pearl, a spiral shell, a small fish, seaweed and coral.">
+      <source src="/events/2026-09-video-ads-with-ai/assets/footer-animation.mp4" type="video/mp4">
+    </video>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="bg-paper text-ink">
+    <p class="pb-20 pt-2 text-center text-[0.72rem] tracking-wide text-ink/40 sm:pb-8">
+      © 2026 AI Builders Network
+    </p>
+  </footer>
+
+</main>
+
+<!-- ============ LIGHTBOX ============ -->
+<div id="lightbox" hidden role="dialog" aria-modal="true" aria-labelledby="lb-title">
+  <div class="lb-panel bubble-card rounded-card bg-paperwhite p-4 sm:p-6">
+    <div class="flex items-start justify-between gap-4">
+      <h2 id="lb-title" class="font-display text-lg font-bold text-ink sm:text-xl">Ad film</h2>
+      <button id="lb-close" type="button" class="bubble rounded-full bg-paperwhite/70 px-3 py-2 font-display text-sm font-semibold text-ink/80">
+        Close
+      </button>
+    </div>
+    <div id="lb-stage" class="mt-4 overflow-hidden rounded-[18px] bg-ink"></div>
+    <p id="lb-meta" class="mt-3 text-center text-sm text-ink/55"></p>
+  </div>
+</div>
+
+<!-- ============ STICKY MOBILE BUY BAR ============ -->
+<div id="buybar" class="px-3 pb-3 sm:hidden" aria-hidden="true">
+  <div class="bubble-grape flex items-center justify-between gap-3 rounded-full px-5 py-3 text-paperwhite">
+    <span class="font-display font-bold">₹999</span>
+    <!-- PLACEHOLDER: [PAYMENT_URL] -->
+    <a href="[PAYMENT_URL]" class="font-display font-bold">Get your seat &rarr;</a>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var hero   = document.getElementById('hero');
+
+    // ---- scroll reveals ----
+    var els = document.querySelectorAll('.reveal');
+    if (reduce || !('IntersectionObserver' in window)) {
+      els.forEach(function (el) { el.classList.add('in'); });
+    } else {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, { rootMargin: '0px 0px -10% 0px' });
+      els.forEach(function (el) { io.observe(el); });
+    }
+
+    // ---- proof carousel: arrows + dot indicators, native scroll-snap does the rest ----
+    var track = document.getElementById('reel-track');
+    if (track) {
+      var reel   = track.closest('.reel');
+      var prev   = reel.querySelector('.reel-prev');
+      var next   = reel.querySelector('.reel-next');
+      var cards  = Array.prototype.slice.call(track.children);
+      var dotsWrap = document.getElementById('reel-dots');
+
+      cards.forEach(function (_, i) {
+        var d = document.createElement('span');
+        d.className = 'reel-dot' + (i === 0 ? ' on' : '');
+        dotsWrap.appendChild(d);
+      });
+      var dots = Array.prototype.slice.call(dotsWrap.children);
+
+      function step() {
+        var a = cards[0], b = cards[1];
+        return b ? (b.offsetLeft - a.offsetLeft) : a.offsetWidth;
+      }
+      function activeIndex() {
+        return Math.round(track.scrollLeft / step());
+      }
+      function sync() {
+        var i = Math.max(0, Math.min(cards.length - 1, activeIndex()));
+        dots.forEach(function (d, n) { d.classList.toggle('on', n === i); });
+        if (prev) prev.disabled = track.scrollLeft <= 4;
+        if (next) next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 4;
+      }
+      function page(dir) {
+        var per = Math.max(1, Math.floor(track.clientWidth / step()));
+        track.scrollBy({ left: dir * per * step(), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      if (prev) prev.addEventListener('click', function () { page(-1); });
+      if (next) next.addEventListener('click', function () { page(1); });
+      var tick;
+      track.addEventListener('scroll', function () {
+        window.cancelAnimationFrame(tick);
+        tick = window.requestAnimationFrame(sync);
+      }, { passive: true });
+      window.addEventListener('resize', sync);
+      sync();
+    }
+
+    // ---- proof-reel lightbox: mounts a <video> for the picked film ----
+    var lb = document.getElementById('lightbox');
+    if (lb) {
+      var lbMeta   = document.getElementById('lb-meta');
+      var lbStage  = document.getElementById('lb-stage');
+      var lbClose  = document.getElementById('lb-close');
+      var lbReturn = null;
+
+      function openLB(btn) {
+        var src = btn.getAttribute('data-src');
+        var poster = btn.getAttribute('data-poster') || '';
+        var label = btn.getAttribute('aria-label') || 'Ad film';
+        lbStage.innerHTML = '';
+        var v = document.createElement('video');
+        v.src = src;
+        if (poster) v.poster = poster;
+        v.controls = true;
+        v.autoplay = true;
+        v.playsInline = true;
+        v.setAttribute('playsinline', '');
+        v.preload = 'auto';
+        v.setAttribute('aria-label', label);
+        lbStage.appendChild(v);
+        lbMeta.textContent = 'Made with AI. No camera, no crew.';
+        lbReturn = btn;
+        lb.hidden = false;
+        requestAnimationFrame(function () { lb.classList.add('open'); });
+        document.body.style.overflow = 'hidden';
+        lbClose.focus();
+        var p = v.play(); if (p && p.catch) p.catch(function () {});
+      }
+      function closeLB() {
+        lb.classList.remove('open');
+        var settled = false;
+        var done = function () {
+          if (settled) return;
+          settled = true;
+          lb.hidden = true;
+          lbStage.innerHTML = '';           // tear the video down — stops audio + network
+          lb.removeEventListener('transitionend', done);
+        };
+        lb.addEventListener('transitionend', done);
+        setTimeout(done, reduce ? 0 : 260);  // fallback if transitionend never fires
+        document.body.style.overflow = '';
+        if (lbReturn) { lbReturn.focus(); lbReturn = null; }
+      }
+
+      document.querySelectorAll('.lb-open').forEach(function (b) {
+        b.addEventListener('click', function () { openLB(b); });
+      });
+      lbClose.addEventListener('click', closeLB);
+      lb.addEventListener('click', function (e) { if (e.target === lb) closeLB(); });
+      lb.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { closeLB(); return; }
+        if (e.key !== 'Tab') return;
+        // focus trap across whatever is focusable in the panel (close button + video controls)
+        var f = lb.querySelectorAll('button, video, [href], [tabindex]:not([tabindex="-1"])');
+        if (!f.length) { e.preventDefault(); return; }
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      });
+    }
+
+    // ---- sticky mobile buy bar: show once the hero has scrolled away ----
+    var buybar = document.getElementById('buybar');
+    if (buybar && hero && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        var past = !entries[0].isIntersecting;
+        buybar.classList.toggle('show', past);
+        buybar.setAttribute('aria-hidden', past ? 'false' : 'true');
+      }, { threshold: 0 }).observe(hero);
+    }
+
+    // ---- final CTA: pause the seabed loop under reduced-motion (poster frame stays) ----
+    var seabed = document.querySelector('video.join-seabed');
+    if (seabed && reduce) {
+      seabed.removeAttribute('autoplay');
+      seabed.addEventListener('loadeddata', function () { seabed.pause(); seabed.currentTime = 0; });
+      seabed.pause();
+    }
+
+    // ---- final CTA: cursor-driven parallax tilt on the 3D stage ----
+    var jStage = document.querySelector('#join .join-stage');
+    var jSection = document.getElementById('join');
+    if (jStage && jSection && !reduce && window.matchMedia('(pointer:fine)').matches) {
+      var jPending = false, jx = 0, jy = 0;
+      jSection.addEventListener('pointermove', function (e) {
+        var r = jSection.getBoundingClientRect();
+        jx = (e.clientX - r.left) / r.width - 0.5;
+        jy = (e.clientY - r.top) / r.height - 0.5;
+        if (!jPending) {
+          jPending = true;
+          requestAnimationFrame(function () {
+            jPending = false;
+            jStage.style.setProperty('--jry', (jx * 12).toFixed(2) + 'deg');
+            jStage.style.setProperty('--jrx', (jy * -9).toFixed(2) + 'deg');
+          });
+        }
+      });
+      jSection.addEventListener('pointerleave', function () {
+        jStage.style.setProperty('--jry', '0deg');
+        jStage.style.setProperty('--jrx', '0deg');
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>

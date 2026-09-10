@@ -1,0 +1,3 @@
+# Old slug for the Sep 2026 workshop -> bespoke landing page (true 301, server-level)
+/events/2026-09-film-shoot-without-a-camera      /events/2026-09-video-ads-with-ai/      301
+/events/2026-09-film-shoot-without-a-camera/*    /events/2026-09-video-ads-with-ai/       301
